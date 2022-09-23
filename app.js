@@ -43,6 +43,7 @@ connectDB()
 app.use('/',require('./routes/index'))
 app.use('/auth',require('./routes/auth'))
 app.use('/test',require('./routes/sms'))
+app.use('/payment',require('./routes/paytm'))
 
 app.get('/test',(req,res)=>{
   
