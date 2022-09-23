@@ -42,6 +42,11 @@ connectDB()
 //Routes
 app.use('/',require('./routes/index'))
 app.use('/auth',require('./routes/auth'))
+app.use('/test',require('./routes/sms'))
+
+app.get('/test',(req,res)=>{
+  
+})
 
 
 
