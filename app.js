@@ -5,7 +5,17 @@ const path=require('path')
 const app=express();
 const passport=require('passport')
 const session=require('express-session')
-const MongoStore = require('connect-mongo')
+const Mongoalert = require('connect-mongo')
+const cors = require('cors');
+const bodyParser=require('body-parser')
+
+
+app.use(express.json());
+
+// Enable cors
+app.use(cors());
+
+
 
 //Load Config
 dotenv.config({path:'./config/.env'})
@@ -23,7 +33,7 @@ app.use(session({
   secret: 'harsh',
   resave: false,
   saveUninitialized: true,
-  store: MongoStore.create({
+  alert: Mongoalert.create({
     mongoUrl: process.env.MONGO_URI,
   })
 }))
@@ -39,17 +49,24 @@ app.use(express.static('public'))
 //Connect to DB
 connectDB()
 
+
 //Routes
+app.get('/card',(req,res)=>{
+  res.render('card')
+})
 app.use('/',require('./routes/index'))
+
 app.use('/auth',require('./routes/auth'))
 app.use('/test',require('./routes/sms'))
 app.use('/payment',require('./routes/paytm'))
-
-app.get('/test',(req,res)=>{
-  
+app.use('/alert',require('./routes/alert'))
+app.get('/profile',(req,res)=>{
+  res.render('c_profile')
 })
 
-
+app.get('/path',(req,res)=>{
+  res.render('directions')
+})
 
 //Start Server
 const PORT=process.env.PORT || 5000;
