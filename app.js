@@ -8,14 +8,13 @@ const session=require('express-session')
 const Mongoalert = require('connect-mongo')
 const cors = require('cors');
 const bodyParser=require('body-parser')
-
-
+const {ensureAuth} = require('../Codeissance_18_Terrifying-Terabytes/middleware/auth')
+// const User = require('')
+const User=require('./models/User')
 app.use(express.json());
 
 // Enable cors
 app.use(cors());
-
-
 
 //Load Config
 dotenv.config({path:'./config/.env'})
@@ -49,23 +48,49 @@ app.use(express.static('public'))
 //Connect to DB
 connectDB()
 
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 //Routes
 app.get('/card',(req,res)=>{
   res.render('card')
 })
-app.use('/',require('./routes/index'))
 
+app.get('/profile/dash',(req,res)=>{
+  res.send("Ritesh Gandu")
+})
+app.use('/',require('./routes/index'))
 app.use('/auth',require('./routes/auth'))
 app.use('/test',require('./routes/sms'))
 app.use('/payment',require('./routes/paytm'))
 app.use('/alert',require('./routes/alert'))
-app.get('/profile',(req,res)=>{
-  res.render('c_profile')
+app.get('/profile',async (req,res)=>{
+  const user=await User.find({firstName:'Sumanta'})
+  console.log(user)
+  res.render('c_profile',{user})
+})
+
+
+app.post('/profile',ensureAuth,async (req,res)=>{
+  // const exist=new User(req.body);
+  // const newUser=await User.findByIdAndUpdate(exist.googleId, req.body , {runValidators: true, new: true})
+  //const newUser = await User.findByIdAndUpdate(exist.googleId, req.body , {runValidators: true, new: true})
+  // await exist.save()
+  cons
+  console.log(exist)
+  res.redirect(`/home/${exist._id}`)
+  
 })
 
 app.get('/path',(req,res)=>{
   res.render('directions')
+})
+
+app.put('/profile/:id' ,async (req,res) =>{
+  const { googleId } = req.params;
+  const product = await Product.findByIdAndUpdate(googleId, req.body , {runValidators: true, new: true})
+  res.redirect(`/profile/${profile._id}`)
 })
 
 //Start Server

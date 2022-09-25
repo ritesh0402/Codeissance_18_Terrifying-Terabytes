@@ -5,6 +5,7 @@ const UserSchema=new mongoose.Schema({
     type:String,
     required:true
   },
+  email:String,
   displayName:{
     type:String,
     required:true
@@ -20,6 +21,15 @@ const UserSchema=new mongoose.Schema({
   image:{
     type:String
   },
+
+
+  phone:String,
+  address:String,
+  city:String,
+  emergency:String,
+  State:String,
+  Zip:String,
+
   createdAt:{
     type:Date,
     default:Date.now
